@@ -1,5 +1,6 @@
 import pytest
 import json
+from src.utils.utils import FileSummary
 
     
 @pytest.fixture(scope='module')
@@ -61,7 +62,7 @@ def temp_json(tmpdir_factory):
     "to": "Счет 41421565395219882431"
   }, {
     "id": 142264268,
-    "state": "EXECUTED",
+    "state": "CANCELED",
     "date": "2019-04-04T23:20:05.206878",
     "operationAmount": {
       "amount": "79114.93",
@@ -87,6 +88,19 @@ def temp_json(tmpdir_factory):
     "description": "Перевод со счета на счет",
     "from": "Счет 44812258784861134719",
     "to": "Счет 74489636417521191160"
+  }, {"id": 441945886,
+    "state": "EXECUTED",
+    "date": "2019-08-26T10:50:58.294041",
+    "operationAmount": {
+      "amount": "31957.58",
+      "currency": {
+        "name": "руб.",
+        "code": "RUB"
+      }
+    },
+    "description": "Перевод организации",
+    "from": "Maestro 1596837868705199",
+    "to": "Счет 64686473678894779589"
 }
   
     file = tmpdir_factory.mktemp('data').join('test_json_file.json')
@@ -95,3 +109,9 @@ def temp_json(tmpdir_factory):
         json.dump(test_json_file, f)
         
     return file
+  
+@pytest.fixture(scope='module')
+def file_print(temp_json):
+  with temp_json.open() as f:
+    return json.load(f)
+  

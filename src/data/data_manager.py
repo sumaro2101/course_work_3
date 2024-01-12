@@ -1,25 +1,24 @@
 import json
-import os
 
-file_data = os.path.join('src', 'data', 'operations.json')
+
 class File:
 
+    
     def __init__(self, file=None):
-        self._validate(file)
+        self._data_validate(file)
         self.open_file = file
-
+        
+    
     @classmethod
-    def _validate(cls, file):
-        """_summary_
-
-        Args:
-            file (_type_): _description_
+    def _data_validate(cls, file):
+        """Валидация полученного файла
 
         Raises:
-            TypeError: _description_
-        """                
+            TypeError: Если None отдает исключение
+        """        
+                
         if file is None:
-            raise TypeError("Файл не найден")
+            raise TypeError("Ожидался путь, путь не найден")
 
     @property
     def open_file(self):
