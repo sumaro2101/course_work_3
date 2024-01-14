@@ -2,4 +2,8 @@ venv
 venv/
 *pyc
 __pycache__
-.covered
+.coverage
+poetry.lock
+.pytest_cache
+.vscode
+.vscode/
