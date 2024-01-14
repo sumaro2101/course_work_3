@@ -24,3 +24,7 @@ def test_fail_fixture(temp_json):
 @pytest.mark.xfail
 def test_fail_fixture_open(file_print):
     assert file_print[0]['date'] == "2019-08-25T10:50:58.294041"
+    
+@pytest.mark.test_fixture
+def test_fixture_summary(summary_tuple):
+    assert summary_tuple._summary() == (None, None, None, None, None, None)

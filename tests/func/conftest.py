@@ -75,6 +75,8 @@ def temp_json(tmpdir_factory):
     "from": "Счет 19708645243227258542",
     "to": "Счет 75651667383060284188"
   }, {
+    
+  }, {
     "id": 873106923,
     "state": "EXECUTED",
     "date": "2019-03-23T01:09:46.296404",
@@ -88,7 +90,8 @@ def temp_json(tmpdir_factory):
     "description": "Перевод со счета на счет",
     "from": "Счет 44812258784861134719",
     "to": "Счет 74489636417521191160"
-  }, {"id": 441945886,
+  }, {
+    "id": 441945886,
     "state": "EXECUTED",
     "date": "2019-08-26T10:50:58.294041",
     "operationAmount": {
@@ -112,6 +115,13 @@ def temp_json(tmpdir_factory):
   
 @pytest.fixture(scope='module')
 def file_print(temp_json):
-  with temp_json.open() as f:
-    return json.load(f)
+    with temp_json.open() as f:
+        return json.load(f)
+  
+@pytest.fixture(scope='module')
+def summary_tuple(temp_json):
+    file = FileSummary(temp_json)
+    return file
+    
+  
   
