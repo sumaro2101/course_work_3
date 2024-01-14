@@ -1,5 +1,5 @@
 import json
-
+from operator import itemgetter
 
 class File:
 
@@ -8,6 +8,13 @@ class File:
         self._data_validate(file)
         self.open_file = file
         
+    @classmethod
+    def give_sort_file(cls, list_, count_files):
+        return sorted([elem for elem in
+                       [item for item in list_ if item]
+                       if elem['state'] != 'CANCELED'],
+                      key=lambda x: x['date'],
+                      reverse=True)[:count_files]
     
     @classmethod
     def _data_validate(cls, file):
