@@ -7,7 +7,7 @@ def test_summary(temp_json):
     file.result = 5
     assert file.result[0].time == '26.08.2019'
     assert file.result[0].description == "Перевод организации"
-    assert file.result[0].from_ == "Maestro 1596 83** **** 5199"
+    assert file.result[0].from_ == "Maestro 1596 83** **** 5199 ->"
 
 @pytest.mark.tuple_maker
 @pytest.mark.xfail
@@ -41,7 +41,7 @@ class TestMask():
         assert summary_tuple._summary(from_="Visa Platinum 6942697754917688") == (None, None, "Visa Platinum 6942697754917688", None, None, None)
     
     def test_summary_card_mask(self, summary_tuple):
-        assert summary_tuple._summary(from_=summary_tuple.make_mask_visa("Visa Platinum 6942697754917688")) == (None, None, "Visa Platinum 6942 69** **** 7688", None, None, None)
+        assert summary_tuple._summary(from_=summary_tuple.make_mask_visa("Visa Platinum 6942697754917688")) == (None, None, "Visa Platinum 6942 69** **** 7688 ->", None, None, None)
         
     @pytest.mark.parametrize('number, expected_result', [("6942697754917688", "**7688"),
                                                          ("4214241434142144", "**2144"),
@@ -49,10 +49,10 @@ class TestMask():
     def test_mask_account(self, summary_tuple, number, expected_result):
         assert summary_tuple.make_mask_account(number) == expected_result
     
-    @pytest.mark.parametrize('number, expected_result', [("Visa Platinum 6942697754917688", "Visa Platinum 6942 69** **** 7688"),
-                                                         ("Visa 6942697754917688", "Visa 6942 69** **** 7688"),
-                                                         ("Счет 6942697754917688", "Счет **7688"),
-                                                         (None, None)])
+    @pytest.mark.parametrize('number, expected_result', [("Visa Platinum 6942697754917688", "Visa Platinum 6942 69** **** 7688 ->"),
+                                                         ("Visa 6942697754917688", "Visa 6942 69** **** 7688 ->"),
+                                                         ("Счет 6942697754917688", "Счет **7688 ->"),
+                                                         (None, "->")])
     def test_summary_mask(self, summary_tuple, number, expected_result):
         assert summary_tuple.make_mask_visa(number) == expected_result
         

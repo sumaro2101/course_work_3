@@ -2,8 +2,7 @@ import json
 from operator import itemgetter
 
 class File:
-
-    
+ 
     def __init__(self, file=None):
         self._data_validate(file)
         self.open_file = file
@@ -13,7 +12,7 @@ class File:
         return sorted([elem for elem in
                        [item for item in list_ if item]
                        if elem['state'] != 'CANCELED'],
-                      key=lambda x: x['date'],
+                      key=itemgetter("date"),
                       reverse=True)[:count_files]
     
     @classmethod

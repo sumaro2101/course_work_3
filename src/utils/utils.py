@@ -1,7 +1,7 @@
 from src.data.data_manager import File
 from collections import namedtuple
 
-class FileSummary(File):
+class FileSummary(File):            
     _summary = namedtuple('Summary', ['time', 'description', 'from_', 'to', 'amount', 'valute'])
     _summary.__new__.__defaults__ = (None, None, None, None, None, None)
     
@@ -23,27 +23,31 @@ class FileSummary(File):
     def make_mask_account(cls, number=None):
         if number is None:
             return None
-        return "".join(["**", number[-4:]])
+        if len(number.split(" ")) == 1:
+            return "".join(["**", number[-4:]])
+        name, number = number.split(" ")
+        number = "".join(["**", number[-4:]])
+        return f'{name} {number}'
         
         
     @classmethod
     def make_mask_visa(cls, card=None, digits_spase=4, mask_char='*'):
         
         if card is None:
-            return None
+            return "->"
         
         if len(card.split(" ")) == 2:
             
             name, number = card.split(' ')
-            if name == "Счет":
+            if name == "Счет" or name == "МИР":
                 
                 result = cls.make_mask_account(number)
-                return f"{name} {result}"
+                return f"{name} {result} ->"
             
             number = "".join([number[:6], mask_char * len(number[6:-4]), number[-4:]])
             result = " ".join(map("".join, zip(*[iter(number)] * digits_spase)))
             
-            return f"{name} {result}"
+            return f"{name} {result} ->"
 
         if len(card.split(" ")) == 3:
             
@@ -51,7 +55,14 @@ class FileSummary(File):
             number = "".join([number[:6], mask_char * len(number[6:-4]), number[-4:]])
             result = " ".join(map("".join, zip(*[iter(number)] * digits_spase)))
             
-            return f'{name_visa} {type_visa} {result}'
+            return f'{name_visa} {type_visa} {result} ->'
+    
+    @classmethod
+    def print_result(cls, item):
+        return f'''{item.time} {item.description}
+{item.from_} {item.to}
+{item.amount} {item.valute}
+'''
     
     @property
     def result(self):
@@ -66,6 +77,4 @@ class FileSummary(File):
                                         amount=float(item.get('operationAmount').get('amount', None)),
                                         valute=item.get('operationAmount').get('currency', None).get('name', None))
                          for item in self.give_sort_file(self.open_file, count_files)]
- 
-                
-                
+              
