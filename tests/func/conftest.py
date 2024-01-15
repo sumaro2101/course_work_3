@@ -5,6 +5,12 @@ from src.utils.utils import FileSummary
     
 @pytest.fixture(scope='module')
 def temp_json(tmpdir_factory):
+    """ Фикстура для Временного хранилища тестового JSON
+
+    Args:
+        tmpdir_factory (fixture): Встроенная фикстура для создания временных папок и файлов
+    """
+      
     test_json_file = {
     "id": 441945886,
     "state": "EXECUTED",
@@ -114,14 +120,29 @@ def temp_json(tmpdir_factory):
     return file
   
 @pytest.fixture(scope='module')
-def file_print(temp_json):
+def file_print(temp_json) -> list:
+    """Фикстура которая открывает JSON из временого тестового хранилища
+
+    Args:
+        temp_json (fixture): Фикструра имеющая путь к временному хранилищу с JSON
+
+    Returns:
+        list: Возращает открытый JSON файл
+    """
+    
     with temp_json.open() as f:
         return json.load(f)
   
 @pytest.fixture(scope='module')
-def summary_tuple(temp_json):
+def summary_tuple(temp_json) -> FileSummary:
+    """Фикстура которая инициализирует класс и получает доступ ко всем параметрам класса
+
+    Args:
+        temp_json (fixture): Фикструра имеющая путь к временному хранилищу с JSON
+
+    Returns:
+        FileSummary: Возращает инициализированный класс, готовый для тестирования
+    """    
+    
     file = FileSummary(temp_json)
     return file
-    
-  
-  
